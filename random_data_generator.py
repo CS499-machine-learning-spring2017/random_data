@@ -11,7 +11,7 @@ def sequentialdata(linenum, windowsize):
 	'''Produces lines that will sequentially decrease
 		The first line will be [255] * windowsize and
 		decrease all the way to [0] * windowsize'''
-	decrementor = max(int(linenum  / windowsize), 1)
+	decrementor = max(int((linenum  / windowsize) / 256), 1)
 	previousrow = [255] * windowsize
 	maxrow = 1
 	for _ in range(linenum + 1):
@@ -19,6 +19,7 @@ def sequentialdata(linenum, windowsize):
 		newrow = deepcopy(previousrow)
 		for i in range(maxrow):
 			newrow[i] = int(max(newrow[i] - decrementor, 0))
+		previousrow = newrow
 		if maxrow < windowsize:
 			maxrow += 1
 
