@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-from random import randrange
+from random import randrange as rand
 from sys import stdout, exit, argv
+from collections import namedtuple
 
 '''
 To run:
@@ -11,8 +12,25 @@ Purpose:
     and will take a specified number for rows
 '''
 
+class Pixel(object):
+    pixel = namedtuple('pixel', ['red', 'green', 'blue'])
+    def createpixel(self):
+        '''cretes a new pixel value'''
+        newpixel = self.pixel(red = rand(self.maxnum),
+                         green = rand(self.maxnum),
+                         blue = rand(self.maxnum))
+        return newpixel
 
-class RandomData:
+    def average(self, row):
+        '''take the average of the given row and returns a tuple of float'''
+        rsum, gsum, bsum = 0,0,0
+        for _pixel in row:
+            rsum += _pixel.red
+            gsum += _pixel.green
+            bsum += _pixel.blue
+        return ( (float(rsum) / len(row)), (float(gsum) / len(row)), (float(bsum) / len(row)) )
+
+class RandomData(Pixel):
     '''Generates random data to replicate what our test data will be
         returns the row and the average of the row
         accepts a window size and how many lines of data you want'''
@@ -27,6 +45,7 @@ class RandomData:
         rows = contains rows of data
         curindex: current index to generate window data from
         '''
+        super(RandomData, self).__init__()
         self.window = window
         self.maxrow = (2 * self.window) - 1
         self.linenums = linenums
@@ -35,16 +54,13 @@ class RandomData:
 
     def makerows(self):
         '''make rows of random data'''
-        return [ randrange(self.maxnum) for _ in range(self.maxrow)]
+        return [ self.createpixel() for _ in range(self.maxrow)]
+
 
     def _initrows(self):
         '''initialize all rows to start generating rows'''
         for _ in range(self.window):
            self.rows.append(self.makerows())
-
-    def average(self, row):
-        '''take the average of the given row and returns a float'''
-        return ((float(sum(row)) / len(row)))
 
     def _cleanupindex(self):
         '''function to handle generating new rows of data'''
