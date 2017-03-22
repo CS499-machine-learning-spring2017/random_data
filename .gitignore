@@ -2,3 +2,4 @@
 *.swp
 *.pyc
 *.tsv
+data_small/*
