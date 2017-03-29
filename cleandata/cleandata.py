@@ -9,8 +9,6 @@ def getdemensions(data):
 def cleandata(data):
     data = data.replace("\xff", "")
     cleaneddata = [ord(d) for d in data]
-    print "Here is a segment of the cleaned data"
-    print cleaneddata[0: 50]
     return cleaneddata
 
 def getrows(data, width):
